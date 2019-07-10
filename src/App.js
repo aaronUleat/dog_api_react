@@ -1,26 +1,32 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import './App.scss';
+import Razas from "./components/Razas";
+class App extends Component {
+  state = {
+    razas: []
+  };
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  componentDidMount = async () => {
+    const req = await fetch("https://dog.ceo/api/breeds/list/all");
+    const res = await req.json(req);
+    const {message} = res;
+
+    this.setState({
+      razas: message
+    });
+    console.log(this.state.razas);
+  };
+
+  render() {
+    return(
+      <div className="App">
+          <div className="container">
+            <h1 className="is-size-1 has-text-grey-dark"> Dog Breeds </h1>
+            <Razas razas={this.state.razas} />
+          </div>
+      </div>
+    );
+  }
+
 }
-
 export default App;
